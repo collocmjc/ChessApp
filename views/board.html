@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Chess</title>
+    <link rel="stylesheet" href="css/chessboard-1.0.0.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="js/chessboard-1.0.0.js"></script>
+  </head>
+  <body>
+    <style type="text/css">
+      .highlight-checked {
+        box-shadow: inset 0 0 3px 3px red;
+      }
+    </style>
+    <div id="board" style="width: 600px"></div>
+    <button id="BackToMenu">BackToMenu</button>
+    <button id="Restart">RestartGame</button>
+    <button id="UndoMove">Undo move</button>
+    <script>
+    var mode="<%= mode %>";
+    console.log(mode);
+    console.log("trest");
+    function onDrop (source, target, piece) {
+        window.location.replace("\\"+mode+"?move="+piece+source+target);
+    };
+    var $board = $('#board');
+    var position ="<%= position %>";
+    var yourTurn="<%= yourTurn %>";
+    var checked="<%= checked %>";
+    var over="<%= over %>";
+    position=position.replace(/-/g, "/");
+    var config = {
+      draggable: yourTurn==="true",
+      onDrop: onDrop,
+      dropOffBoard: 'snapback', // this is the default
+      position: position
+    }
+     var board = ChessBoard('board', config);
+     $('#BackToMenu').on('click', function () {
+       window.location.replace("\\");
+     })
+     $('#Restart').on('click', function () {
+       window.location.replace("\\"+mode+"?move=Start");
+     })
+     $('#UndoMove').on('click', function () {
+       window.location.replace("\\"+mode+"?move=Undo");
+     })
+     //Highlight checked king
+     if (checked !=null) {
+       $board.find('.square-' + checked).addClass('highlight-checked')
+     }
+     if(over==="true"){
+       alert("Game Over");
+     }
+     else if(over==='pat'){
+       alert('Pat');
+     }
+     else if(over==='win'){
+       alert('You win!');
+     }
+     else if(over==='lose'){
+       alert('You loose');
+     }
+   </script>
+  </body>
+</html>
